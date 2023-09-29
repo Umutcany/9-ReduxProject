@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { GrClose } from "react-icons/gr";
 import Input from "./Input";
+import Button from "./Button";
 
 interface Props {
   title: string;
@@ -20,7 +21,7 @@ const Modal: React.FC<Props> = ({ title, content, btnText, btnFunc }) => {
     if (type == "url") {
       setProductInfo((prev) => ({
         ...prev,
-        [e.target.name]: e.target.files[0],
+        [e.target.name]: URL.createObjectURL(e.target.files[0]),
       }));
     } else {
       setProductInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -57,6 +58,7 @@ const Modal: React.FC<Props> = ({ title, content, btnText, btnFunc }) => {
           id={"url"}
           onChange={(e) => onChangeFunc(e, "url")}
         />
+        <Button btnText={btnText} onClick={btnFunc} />
       </div>
     </div>
   );
