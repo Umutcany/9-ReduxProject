@@ -18,8 +18,16 @@ export const dataSlice = createSlice({
     deleteDataFunc: (state, action: PayloadAction<any>) => {
       state.data = [...state.data.filter((data) => data.id != action.payload)];
     },
+    updateDataFunc: (state, action: PayloadAction<any>) => {
+      state.data = [
+        ...state.data.map((data) =>
+          data.id == action.payload.id ? { ...data, ...action.payload } : data
+        ),
+      ];
+    },
   },
 });
 
-export const { createDataFunc, deleteDataFunc } = dataSlice.actions;
+export const { createDataFunc, deleteDataFunc, updateDataFunc } =
+  dataSlice.actions;
 export default dataSlice.reducer;
