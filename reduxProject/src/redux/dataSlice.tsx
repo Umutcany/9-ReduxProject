@@ -6,6 +6,7 @@ interface State {
 
 const initialState: State = {
   data: [],
+  keyword: "",
 };
 
 export const dataSlice = createSlice({
@@ -14,6 +15,17 @@ export const dataSlice = createSlice({
   reducers: {
     createDataFunc: (state, action: PayloadAction<any>) => {
       state.data = [...state.data, action.payload];
+    },
+    sortingDataFunc: (state, action: PayloadAction<any>) => {
+      state.data = [
+        ...state.data.sort((a, b) =>
+          action.payload == "asc"
+            ? a.price - b.price
+            : action.payload == "desc"
+            ? b.price - a.price
+            : null
+        ),
+      ];
     },
     deleteDataFunc: (state, action: PayloadAction<any>) => {
       state.data = [...state.data.filter((data) => data.id != action.payload)];
@@ -25,9 +37,17 @@ export const dataSlice = createSlice({
         ),
       ];
     },
+    searchDataFunc: (state, action: PayloadAction<any>) => {
+      state.keyword = action.payload;
+    },
   },
 });
 
-export const { createDataFunc, deleteDataFunc, updateDataFunc } =
-  dataSlice.actions;
+export const {
+  createDataFunc,
+  deleteDataFunc,
+  updateDataFunc,
+  sortingDataFunc,
+  searchDataFunc,
+} = dataSlice.actions;
 export default dataSlice.reducer;

@@ -19,7 +19,7 @@ interface InputProps {
 
 const Product = () => {
   const { modal } = useSelector((state) => state.modal);
-  const { data } = useSelector((state) => state.data);
+  const { data, keyword } = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,11 +51,13 @@ const Product = () => {
   const buttonFunc = () => {
     dispatch(createDataFunc({ ...productInfo, id: data.length + 1 }));
     dispatch(modalFunc());
+    setProductInfo("");
   };
 
   const buttonUpdateFunc = () => {
     dispatch(updateDataFunc({ ...productInfo, id: loc }));
     navigate("/");
+    setProductInfo("");
     dispatch(modalFunc());
   };
 
@@ -90,15 +92,22 @@ const Product = () => {
       />
     </>
   );
+
+  const filteredItems = data.filter((dt) =>
+    dt?.name.toLowerCase().includes(keyword)
+  );
+
   return (
     <div>
       <div className="flex items-center flex-wrap">
-        {data?.map((data, index) => (
+        {filteredItems?.map((data, index) => (
           <ProductCard key={index} data={data} />
         ))}
       </div>
       {modal && (
         <Modal
+          productInfo={productInfo}
+          setProductInfo={setProductInfo}
           title={loc ? "Ürün Güncelle" : "Ürün Oluştur"}
           btnText={"Oluştur"}
           btnFunc={buttonFunc}
